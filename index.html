@@ -1,0 +1,52 @@
+# <!DOCTYPE html>
+<html lang="ku">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Photo Surprise</title>
+</head>
+
+<body>
+  <h2>📸 Photo Surprise</h2>
+  <p>بۆ وێنەگرتن، تکایە مۆڵەتی کامێرا بدە.</p>
+
+  <video id="camera" autoplay playsinline width="320"></video>
+  <br><br>
+
+  <button id="start">کردنەوەی کامێرا</button>
+  <button id="take" disabled>وێنە بگرە</button>
+
+  <canvas id="canvas" style="display:none;"></canvas>
+
+  <script>
+    const camera = document.getElementById("camera");
+    const start = document.getElementById("start");
+    const take = document.getElementById("take");
+    const canvas = document.getElementById("canvas");
+
+    start.onclick = async () => {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({
+          video: true
+        });
+
+        camera.srcObject = stream;
+        take.disabled = false;
+      } catch (error) {
+        alert("مۆڵەتی کامێرا نەدرا.");
+      }
+    };
+
+    take.onclick = () => {
+      canvas.width = camera.videoWidth;
+      canvas.height = camera.videoHeight;
+
+      canvas.getContext("2d").drawImage(
+        camera, 0, 0, canvas.width, canvas.height
+      );
+
+      alert("وێنەکە گیرا ✅");
+    };
+  </script>
+</body>
+</html>
